@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 
@@ -19,20 +20,33 @@ class NewVisitorTest(unittest.TestCase):
         # Zwróciła uwagę, że tytuł strony i nagłówek zawierają słowo Listy.
 
         self.assertIn('Listy', self.browser.title)
-        self.fail('Zakonczenie testu!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('Listy', header_text)
 
 
 # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
 
+        inputbox = self.browser.find_elemend_by_id('id_new_item')
+        self.assertEqual(inputbox.get_attribute('placeholder'), 'Wpisz rzecz do zrobienia')
+
 # W polu tekstowym wpisała "Kupić pawie pióra" (hobby Edyty
-# poleg
-# a na tworzeniu ozdobnych przynęt).
+#  polega na tworzeniu ozdobnych przynęt).
+        inputbox.send_keys('Kupić pawie pióra')
 
 # Po naciśnięciu klawisza Enter strona została uaktualniona i wyświetla
 # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
+        inputbox.send_keys(Keys.ENTER)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = self.browser.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1:Kupić pawie pióra' for row in rows)
+        )
 
 # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
 # Edyta wpisała "Użyć pawich piór do zrobienia przynęty" (Edyta jest niezwykle skrupulatna).
+
+        self.fail('Zakończenie testu!')
 
 # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia.
 
