@@ -26,7 +26,7 @@ class NewVisitorTest(unittest.TestCase):
 
 # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
 
-        inputbox = self.browser.find_elemend_by_id('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(inputbox.get_attribute('placeholder'), 'Wpisz rzecz do zrobienia')
 
 # W polu tekstowym wpisała "Kupić pawie pióra" (hobby Edyty
@@ -40,7 +40,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = self.browser.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1:Kupić pawie pióra' for row in rows)
+            any(row.text == '1:Kupić pawie pióra' for row in rows),
+            'Nowy element nie znajduje się w tabeli.'
         )
 
 # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
