@@ -23,7 +23,6 @@ class NewVisitorTest(unittest.TestCase):
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('Listy', header_text)
 
-
 # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
 
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -39,20 +38,29 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = self.browser.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1:Kupić pawie pióra' for row in rows),
-            'Nowy element nie znajduje się w tabeli.'
-        )
+        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
 
 # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
 # Edyta wpisała "Użyć pawich piór do zrobienia przynęty" (Edyta jest niezwykle skrupulatna).
 
-        self.fail('Zakończenie testu!')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Użyć pawich piór do zrobienia przynęty')
+        inputbox.send_keys(Keys.ENTER)
+
 
 # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia.
 
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
+        self.assertIn(
+            '2: Użyć pawich piór do zrobienia przynęty', [row.text for row in rows]
+        )
+
 # Edyta była ciekawa, czy witryna zapamięta jej listę. Zwróciła uwagę na wygenerowany dla niej
 # unikatowy adres URL, obok którego znajduje się pewien tekst z wyjaśnieniem
+
+        self.fail('Zakończenie testu!')
 
 # Przechodzi pod podany adres URL i widzi wyświetloną swoją listę rzeczy do zrobienia.
 
